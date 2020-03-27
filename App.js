@@ -9,6 +9,7 @@
 import {TextInput} from 'react-native-paper';
 import {FlatList} from 'react-native';
 import {Avatar} from 'react-native-paper';
+import {Card, Title, Paragraph} from 'react-native-paper';
 //import { Button } from 'react-native-material-ui';
 import {Button} from 'react-native-paper';
 import {Component} from 'react';
@@ -30,16 +31,98 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+// function Item({city, title, temperature, sunset, sunrise, pressure}) {
+//   return (
+//     <View style={styles.item}>
+//       <Text style={styles.title}>{city}</Text>
+//       <Text style={styles.title}>{title}</Text>
+//       <Avatar.Icon size={90} backgroundColor="#4d2c91" icon="cloud-outline" />
+//       <Text style={styles.title}>Temperatura {temperature} </Text>
+//       <Text style={styles.title}>sunset {sunset}</Text>
+//       <Text style={styles.title}>sunrise {sunrise} </Text>
+//       <Text style={styles.title}>pressure {pressure} </Text>
+//     </View>
+//   );
+// }
+
 function Item({city, title, temperature, sunset, sunrise, pressure}) {
   return (
     <View style={styles.item}>
-      <Text style={styles.title}>{city}</Text>
-      <Text style={styles.title}>{title}</Text>
-      <Avatar.Icon size={90} backgroundColor="#4d2c91" icon="cloud-outline" />
-      <Text style={styles.title}>Temperatura {temperature} </Text>
-      <Text style={styles.title}>Sunset {sunset}</Text>
-      <Text style={styles.title}>Sunrise {sunrise} </Text>
-      <Text style={styles.title}>pressure {pressure} </Text>
+      <Avatar.Icon
+        size={90}
+        accent="#3498db"
+        backgroundColor="#4d2c91"
+        icon="weather-partlycloudy"
+      />
+      <Card.Title
+        title="City"
+        subtitle=""
+        left={props => (
+          <Avatar.Icon size={50} backgroundColor="#4d2c91" icon="city" />
+        )}
+        right={props => <Text style={styles.title}> {city} </Text>}
+      />
+
+      <Card.Title
+        title="Sky"
+        subtitle=""
+        left={props => (
+          <Avatar.Icon
+            size={50}
+            backgroundColor="#4d2c91"
+            icon="cloud-outline"
+          />
+        )}
+        right={props => <Text style={styles.title}> {title} </Text>}
+      />
+      <Card.Title
+        title="Temperatura"
+        subtitle=""
+        left={props => (
+          <Avatar.Icon
+            size={50}
+            backgroundColor="#4d2c91"
+            icon="temperature-celsius"
+          />
+        )}
+        right={props => <Text style={styles.title}> {temperature} </Text>}
+      />
+      <Card.Title
+        title="Sunset"
+        subtitle=""
+        left={props => (
+          <Avatar.Icon
+            size={50}
+            backgroundColor="#4d2c91"
+            icon="weather-sunset-down"
+          />
+        )}
+        right={props => <Text style={styles.title2}> {sunset} </Text>}
+      />
+      <Card.Title
+        title="Sunrise"
+        subtitle=""
+        left={props => (
+          <Avatar.Icon
+            size={50}
+            backgroundColor="#4d2c91"
+            icon="weather-sunset-up"
+          />
+        )}
+        right={props => <Text style={styles.title2}> {sunrise} </Text>}
+      />
+      <Card.Title
+        title="Pressure"
+        subtitle=""
+        left={props => (
+          <Avatar.Icon
+            size={50}
+            backgroundColor="#4d2c91"
+            icon="weather-windy"
+          />
+        )}
+        right={props => <Text style={styles.title}> {pressure} </Text>}
+      />
     </View>
   );
 }
@@ -53,23 +136,11 @@ export default class App extends Component {
     sunset: null,
     sunrise: null,
     pressure: null,
+    description: null,
   };
-
   // componentDidMount() {
-  //   return fetch(
-  //     'http://api.openweathermap.org/data/2.5/weather?q=London&appid=ff0db0006282fd4c77c1d69aec442ec1',
-  //   )
-  //     .then(response => response.json())
-  //     .then(responseData => {
-  //       this.setState({api: responseData});
-  //       this.setState({city: this.state.api.main.temp});
-  //     })
-  //     .catch(error => this.setState({error}));
   // }
-
   displayCity = () => {
-    //  const y = 'napis';
-    //  this.state.city == y;
     const url =
       'http://api.openweathermap.org/data/2.5/weather?q=London&appid=ff0db0006282fd4c77c1d69aec442ec1';
     let link = url.replace('London', this.state.text);
@@ -81,13 +152,18 @@ export default class App extends Component {
         lol += parseFloat(this.state.api.main.temp);
 
         this.setState({city: Math.round(lol)});
-        this.setState({sunset: this.state.api.sys.sunset});
-        this.setState({sunrise: this.state.api.sys.sunrise});
+        this.setState({description: this.state.api.weather[0].description});
+
+        const timestamp = Date(this.state.api.sys.sunset).toString();
+        this.setState({sunset: timestamp});
+
+        const timestamp2 = Date(this.state.api.sys.sunrise).toString();
+        this.setState({sunrise: timestamp2});
         this.setState({pressure: this.state.api.main.pressure});
       })
       .catch(error => this.setState({error}));
   };
-  //273.15
+
   render() {
     return (
       <>
@@ -107,7 +183,7 @@ export default class App extends Component {
 
           <Item
             city={this.state.text}
-            title="info"
+            title={this.state.description}
             temperature={this.state.city}
             sunrise={this.state.sunrise}
             sunset={this.state.sunset}
@@ -169,7 +245,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
+    color: '#fafafa',
+  },
+  title2: {
+    fontSize: 20,
     color: '#fafafa',
   },
 });
