@@ -5,12 +5,10 @@
  * @format
  * @flow
  */
-//import {TextInput} from 'react-native';
+import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {TextInput} from 'react-native-paper';
-import {FlatList} from 'react-native';
 import {Avatar} from 'react-native-paper';
 import {Card, Title, Paragraph} from 'react-native-paper';
-//import { Button } from 'react-native-material-ui';
 import {Button} from 'react-native-paper';
 import {Component} from 'react';
 import React from 'react';
@@ -31,45 +29,31 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-// function Item({city, title, temperature, sunset, sunrise, pressure}) {
-//   return (
-//     <View style={styles.item}>
-//       <Text style={styles.title}>{city}</Text>
-//       <Text style={styles.title}>{title}</Text>
-//       <Avatar.Icon size={90} backgroundColor="#4d2c91" icon="cloud-outline" />
-//       <Text style={styles.title}>Temperatura {temperature} </Text>
-//       <Text style={styles.title}>sunset {sunset}</Text>
-//       <Text style={styles.title}>sunrise {sunrise} </Text>
-//       <Text style={styles.title}>pressure {pressure} </Text>
-//     </View>
-//   );
-// }
-
 function Item({city, title, temperature, sunset, sunrise, pressure}) {
   return (
     <View style={styles.item}>
       <Avatar.Icon
-        size={90}
-        accent="#3498db"
-        backgroundColor="#4d2c91"
+        size={100}
+        theme={theme}
+        color="#4d2c91"
         icon="weather-partlycloudy"
       />
       <Card.Title
         title="City"
         subtitle=""
         left={props => (
-          <Avatar.Icon size={50} backgroundColor="#4d2c91" icon="city" />
+          <Avatar.Icon size={50} theme={theme} color="#4d2c91" icon="city" />
         )}
         right={props => <Text style={styles.title}> {city} </Text>}
       />
-
       <Card.Title
         title="Sky"
         subtitle=""
         left={props => (
           <Avatar.Icon
             size={50}
-            backgroundColor="#4d2c91"
+            theme={theme}
+            color="#4d2c91"
             icon="cloud-outline"
           />
         )}
@@ -81,7 +65,8 @@ function Item({city, title, temperature, sunset, sunrise, pressure}) {
         left={props => (
           <Avatar.Icon
             size={50}
-            backgroundColor="#4d2c91"
+            theme={theme}
+            color="#4d2c91"
             icon="temperature-celsius"
           />
         )}
@@ -93,7 +78,8 @@ function Item({city, title, temperature, sunset, sunrise, pressure}) {
         left={props => (
           <Avatar.Icon
             size={50}
-            backgroundColor="#4d2c91"
+            theme={theme}
+            color="#4d2c91"
             icon="weather-sunset-down"
           />
         )}
@@ -105,7 +91,8 @@ function Item({city, title, temperature, sunset, sunrise, pressure}) {
         left={props => (
           <Avatar.Icon
             size={50}
-            backgroundColor="#4d2c91"
+            theme={theme}
+            color="#4d2c91"
             icon="weather-sunset-up"
           />
         )}
@@ -117,7 +104,8 @@ function Item({city, title, temperature, sunset, sunrise, pressure}) {
         left={props => (
           <Avatar.Icon
             size={50}
-            backgroundColor="#4d2c91"
+            theme={theme}
+            color="#4d2c91"
             icon="weather-windy"
           />
         )}
@@ -138,8 +126,7 @@ export default class App extends Component {
     pressure: null,
     description: null,
   };
-  // componentDidMount() {
-  // }
+
   displayCity = () => {
     const url =
       'http://api.openweathermap.org/data/2.5/weather?q=London&appid=ff0db0006282fd4c77c1d69aec442ec1';
@@ -194,6 +181,16 @@ export default class App extends Component {
     );
   }
 }
+
+const theme = {
+  ...DefaultTheme,
+  roundness: 2,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#fafafa',
+    accent: '#4d2c91',
+  },
+};
 
 const styles = StyleSheet.create({
   scrollView: {
